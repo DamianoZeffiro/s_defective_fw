@@ -49,8 +49,6 @@ along with s_defective_fw. If not, see <http://www.gnu.org/licenses/>.
     * `inittable.m`,
     * `missingedgecount.m`,
     * `partials.m`,
-    * `updatetable.m`,
-    * `merge.m`,
     * `cliquenames.mat`,
     * `README.md`,
 beside the folder “instances” with graphs from the 2nd DIMACS implementation challenge. 

@@ -35,10 +35,11 @@ while flagls==0
         % fw direction
         dFW = xstar - x;
         p1 = g' * dFW;
-        findx = find(x > 0.000001);
+        findx = find(x > 1/(10*n));
         if (p1 <= eps)
             if missingedgecount(Q, findx) <= s
                 flagls = 1;
+                ttot = toc;
                 break;
             end
         end
@@ -85,5 +86,4 @@ if flagls == 0
     it = it+1;
 end
 end
-ttot = toc;
 end

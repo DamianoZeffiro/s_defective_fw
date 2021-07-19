@@ -1,7 +1,8 @@
 % test the FDFW on a list of graphs from the 2nd DIMACS optimization challenge.
 % see butenkoclique in cliquenames.mat for a list of 
 % graph names. cnumV must be given as a list of indices
-function main(cnumV)
+% algorithm = 1 to use the FDFW, algorithm = 2 to use the FWdc
+function main(cnumV, algorithm)
 % total number of cliques
 numclique = 50;
 % time limit for each instance
@@ -12,8 +13,6 @@ nrunmax = 100;
 sVector = [1, 2, 3, 4];
 % Lipschitz constant starting estimate
 L = 1;
-% 1 for FDFW, 2 for FWdc
-algorithm = 1;
 algorithmV = ["FDFW", "FWdc"];
 savenum = 1;
 % comment if you don't want to reset results
@@ -37,7 +36,7 @@ for sI = 1:4
         [A, sN] = clique_init2(cnum);
         n = size(A, 2);        
         % stopping condition: FW gap <= eps and support is a clique
-        eps = 2 * 1e-3;
+        eps = 2e-3;
         % regularization coefficients
         gammax = 1;
         gammay = 2/(n^2);
@@ -52,7 +51,8 @@ for sI = 1:4
             [~,n] = size(A);
             Q = A + 0.5 * gammax * eye(n); 
             filterU = 1 - tril(ones(n));
-            Ac = (1 - Q).*filterU;            
+            % upper triangular part of fake edge matrix 
+            Ac = (1 - A).*filterU;            
             if algorithm == 1
                 disp('******************************');
                 % initialization of a random y component
@@ -66,9 +66,9 @@ for sI = 1:4
                 % no random y component needed
                 [x, itf,  cputimes(cnum, krun, sI)] = FWdc(Q, Ac, x0, maxtime, eps, gammay, s, L);
             end
-            cliquesizes(cnum, krun, sI) =  sum((abs(x)>=0.000001));
+            cliquesizes(cnum, krun, sI) =  sum((abs(x)>=1/(10*n)));
             % Print results:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            fprintf(1, 'Missing edges: %d\n',   missingedgecount(A, find(abs(x) >=0.000001)));
+            fprintf(1, 'Missing edges: %d\n',   missingedgecount(A, find(abs(x) >=1/(10*n))));
             fprintf(1,'Number of non-zero components of x = %d\n',...
                 cliquesizes(cnum, krun, sI));
             fprintf(1,'Number of iterations = %d\n',...

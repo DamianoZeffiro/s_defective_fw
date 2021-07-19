@@ -48,7 +48,7 @@ while flagls==0
     totstep = 1;
     continuecycle = 1;
     Invertex = 0;
-    % Short Step Chain cycle
+    % Short Step Chain
     while(continuecycle)
         indcc = find(x > 0e0);
         [~,istaraw] = min(gx(indcc));
@@ -106,7 +106,7 @@ while flagls==0
         if bv^2 < 0
             warning('w');
         end 
-        beta = (- bv + sqrt(bv^2-4*av*cv))/(2*av);      
+        beta = (- bv + sqrt(bv^2-4*av*cv))/(2*av);    
         cvbis = zzbar - gap^2/(nd*L^2);
         bvbis = 2*dzzbar;
         avbis = nd;
@@ -158,10 +158,10 @@ while flagls==0
     Qx = Q*x;
     Aysim = Ay + Ay';
     Ayx = Aysim * x;
-    xx = x*x';
-    xxAc = xx.*Ac;
+    xx2 = (2 * x)*x';
+    xx2Ac = xx2.*Ac;
     gxnew = 2 * Qx + 2 * Ayx;
-    gynew = 2 * xxAc + gammay * Ay;
+    gynew = xx2Ac + gammay * Ay;
     % new objective value
     fxnew = x'*Qx + x'*Ayx + 0.5 * gammay * sum(Ay.^2, 'all');
     % check sufficient decrease
